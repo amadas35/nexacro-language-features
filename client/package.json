@@ -1,0 +1,17 @@
+{
+  "name": "nexacro-language-client",
+  "version": "0.0.1",
+  "description": "A language client for nexacro language support.",
+  "author": "TOBESOFT co.",
+  "license": "ISC",
+  "engines": {
+    "vscode": "^1.66.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.25",
+    "@types/vscode": "^1.66.0"
+  }
+}

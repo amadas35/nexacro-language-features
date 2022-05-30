@@ -1,0 +1,39 @@
+{
+	"name": "xscript",
+	"scopeName": "source.xscript",
+	"patterns": [
+		{
+			"include": "#include-declaration"
+		},
+    {
+			  "include": "source.ts"
+		}
+	],
+	"repository": {
+    "include-declaration": {
+      "begin": "(?<![_$[:alnum:]])\\b(include)\\b",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.include.xscript"
+        }
+      },
+      "name": "meta.include.xscript",
+      "end": "(?<!^include|[^\\._$[:alnum:]]include)(?=;|$|^)",
+      "patterns": [
+        {
+          "begin": "(\\s+)",
+          "end": "(?:\\s*(?=;|$|^))",
+          "patterns": [
+            {
+              "include": "source.ts#comment"
+            },
+            {
+              "include": "source.ts#string"
+            }
+          ]
+        }
+        
+      ]
+    }
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"editor.insertSpaces": false,
+	"typescript.tsc.autoDetect": "on",
+	"typescript.preferences.quoteStyle": "single",
+	"nexacroLanguageService.trace.server": "verbose"
+}

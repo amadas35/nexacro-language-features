@@ -1,0 +1,94 @@
+{
+    "name": "nexacro-language-features",
+    "displayName": "nexacro-language-features",
+    "description": "Extension for nexacro language support.",
+    "author": "TOBESOFT co.",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.66.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "activationEvents": [
+		"onLanguage:nexacro",
+        "onLanguage:xscript"
+	],
+	"main": "./client/out/extension",
+    "contributes": {
+        "languages": [
+            {
+                "id": "nexacro",
+                "aliases": [
+                    "Nexacro",
+                    "nexacro"
+                ],
+                "extensions": [
+                    ".xadl",
+                    ".xfdl",
+                    ".xjs"
+                ],
+                "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "xscript",
+                "aliases": [
+                    "Nexacro",
+                    "nexacro",
+                    "xscript"
+                ],
+                "configuration": "./xscript-language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "nexacro",
+                "scopeName": "text.xml.nexacro",
+                "path": "./syntaxes/nexacro.tmLanguage.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.xscript.nexacro": "nexacro-xscript",
+                    "source.xscript": "nexacro-xscript"
+                },
+                "tokenTypes": {
+                    "meta.tag string.quoted": "other"
+                }
+            },
+            {
+                "language": "xscript",
+                "scopeName": "source.xscript",
+                "path": "./syntaxes/xscript.tmLanguage.json"
+            }
+        ],
+        "configuration": {
+			"type": "object",
+			"title": "nexacro language server trace configuration",
+			"properties": {
+				"nexacroLanguageService.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "verbose",
+					"description": "Traces the communication between VS Code and the language server."
+				}
+			}
+		}
+    },
+    "scripts": {
+		"vscode:prepublish": "cd client && npm install && cd .. && npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+	},
+    "devDependencies": {
+        "@types/node": "^17.0.25",
+        "@typescript-eslint/eslint-plugin": "^5.20.0",
+        "@typescript-eslint/parser": "^5.20.0",
+        "eslint": "^8.13.0",
+        "typescript": "^4.6.3"
+    }
+}

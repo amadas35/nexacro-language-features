@@ -1,0 +1,436 @@
+{
+	"name": "nexacro",
+	"scopeName": "text.xml.nexacro",
+	"fileTypes": [".xadl", ".xfdl", ".xjs"],
+	"patterns": [
+	  {
+		"include": "#xml-processing"
+	  },
+	  {
+		"include": "#comments"
+	  },
+	  {
+		"include": "#tags-valid"
+	  },
+	  {
+		"include": "#entity"
+	  },
+	  {
+		"include": "#bare-ampersand"
+	  }
+	],
+	"repository": {
+	  "bare-ampersand": {
+		"match": "&",
+		"name": "invalid.illegal.bad-ampersand.xml.nexacro"
+	  },
+	  "doublequotedString": {
+		"begin": "\"",
+		"beginCaptures": {
+		  "0": {
+			"name": "punctuation.definition.string.begin.xml.nexacro"
+		  }
+		},
+		"end": "\"",
+		"endCaptures": {
+		  "0": {
+			"name": "punctuation.definition.string.end.xml.nexacro"
+		  }
+		},
+		"name": "string.quoted.double.xml.nexacro",
+		"patterns": [
+		  {
+			"include": "#entity"
+		  },
+		  {
+			"include": "#bare-ampersand"
+		  }
+		]
+	  },
+	  "entity": {
+		"captures": {
+		  "1": {
+			"name": "punctuation.definition.constant.xml.nexacro"
+		  },
+		  "3": {
+			"name": "punctuation.definition.constant.xml.nexacro"
+		  }
+		},
+		"match": "(&)([:a-zA-Z_][:a-zA-Z0-9_.-]*|#[0-9]+|#x[0-9a-fA-F]+)(;)",
+		"name": "constant.character.entity.xml.nexacro"
+	  },
+	  "singlequotedString": {
+		"begin": "'",
+		"beginCaptures": {
+		  "0": {
+			"name": "punctuation.definition.string.begin.xml.nexacro"
+		  }
+		},
+		"end": "'",
+		"endCaptures": {
+		  "0": {
+			"name": "punctuation.definition.string.end.xml.nexacro"
+		  }
+		},
+		"name": "string.quoted.single.xml.nexacro",
+		"patterns": [
+		  {
+			"include": "#entity"
+		  },
+		  {
+			"include": "#bare-ampersand"
+		  }
+		]
+	  },
+	  "embeddedScript": {
+		"begin": "(^[ \\t\\r\\n]+)?(?=<(?i:script)\\b(?!-))",
+		"beginCaptures": {
+		  "1": {
+			"name": "punctuation.whitespace.embedded.leading.xml.nexacro"
+		  }
+		},
+		"end": "(?!\\G)([ \\t\r\\n]*$\\n?)?",
+		"endCaptures": {
+		  "1": {
+			"name": "punctuation.whitespace.embedded.trailing.xml.nexacro"
+		  }
+		},
+		"patterns": [
+		  {
+			"begin": "(<)((?i:script))\\b",
+			"beginCaptures": {
+			  "0": {
+				"name": "meta.tag.metadata.script.start.xml.nexacro"
+			  },
+			  "1": {
+				"name": "punctuation.definition.tag.begin.xml.nexacro"
+			  },
+			  "2": {
+				"name": "entity.name.tag.xml.nexacro"
+			  }
+			},
+			"end": "(/)((?i:script))(>)",
+			"endCaptures": {
+			  "0": {
+				"name": "meta.tag.metadata.script.end.xml.nexacro"
+			  },
+			  "2": {
+				"name": "entity.name.tag.xml.nexacro"
+			  },
+			  "3": {
+				"name": "punctuation.definition.tag.end.xml.nexacro"
+			  }
+			},
+			"name": "meta.tag.script.xml.nexacro",
+			"patterns": [
+			  {
+				"begin": "\\G",
+				"end": "(?=/)",
+				"patterns": [
+				  {
+					"begin": "\\G",
+					"end": "(?=>)",
+					"patterns": [
+					  {
+						"include": "#tagStuff"
+					  }
+					]
+				  },
+				  {
+					"begin": "(>)",
+					"beginCaptures": {
+					  "0": {
+						"name": "meta.tag.metadata.script.start.xml.nexacro"
+					  },
+					  "1": {
+						"name": "punctuation.definition.tag.end.xml.nexacro"
+					  }
+					},
+					"end": "((<))(?=/(?i:script))",
+					"endCaptures": {
+					  "0": {
+						"name": "meta.tag.metadata.script.end.xml.nexacro"
+					  },
+					  "1": {
+						"name": "punctuation.definition.tag.begin.xml.nexacro"
+					  },
+					  "2": {
+						"name": "source.js-ignored-vscode"
+					  }
+					},
+					"patterns": [
+					  {
+						"begin": "\\G",
+						"end": "(?=</(?i:script))",
+						"name": "meta.embedded.block.xml.nexacro",
+						"patterns": [
+						  {
+							"include": "#cdata"
+						  }
+						]
+					  }
+					]
+				  },
+				  {
+					"begin": "(?=(?i:type))",
+					"end": "(<)(?=/(?i:script))",
+					"endCaptures": {
+					  "0": {
+						"name": "meta.tag.metadata.script.end.xml.nexacro"
+					  },
+					  "1": {
+						"name": "punctuation.definition.tag.begin.xml.nexacro"
+					  }
+					},
+					"patterns": [
+					  {
+						"begin": "\\G",
+						"end": "(>)",
+						"endCaptures": {
+						  "1": {
+							"name": "punctuation.definition.tag.end.xml.nexacro"
+						  }
+						},
+						"name": "meta.tag.metadata.script.start.xml.nexacro",
+						"patterns": [
+						  {
+							"include": "#tagStuff"
+						  }
+						]
+					  },
+					  {
+						"begin": "(?!\\G)",
+						"end": "(?=</(?i:script))",
+						"name": "source.unknown"
+					  }
+					]
+				  }
+				]
+			  }
+			]
+		  }
+		]
+	  },
+	  "cdata": {
+		  "begin": "<!\\[CDATA\\[",
+		  "beginCaptures": {
+			  "0": {
+			  "name": "punctuation.section.embedded.begin.xml.nexacro"
+			  }
+		  },
+		  "end": "]]>",
+		  "endCaptures": {
+			  "0": {
+			  "name": "punctuation.section.embedded.end.xml.nexacro"
+			  }
+		  },
+		  "patterns": [
+			  {
+		  "begin":  "\\G",
+		  "end": "(?=]]>)",
+		  "contentName": "meta.embedded.block.xscript.nexacro",
+		  "patterns": [
+				  { 
+			  "include": "source.xscript"
+			}
+		  ]
+			  }
+		  ]
+	  },
+	  "tags-valid": {
+		"patterns": [
+		  {
+			"begin": "(?i)(<)(adl|fdl|application|form)(?=\\s|/?>)",
+			"beginCaptures": {
+			  "1": {
+				"name": "punctuation.definition.tag.begin.xml.nexacro"
+			  },
+			  "2": {
+				"name": "entity.name.tag.xml.nexacro"
+			  }
+			},
+			"end": ">",
+			"endCaptures": {
+			  "0": {
+				"name": "punctuation.definition.tag.end.xml.nexacro"
+			  }
+			},
+			"name": "meta.tag.structure.$2.start.xml.nexacro",
+			"patterns": [
+			  {
+				"include": "#tagStuff"
+			  }
+			]
+		  },
+		  {
+			"begin": "(?i)(</)(adl|fdl|application|form)(?=\\s|/?>)",
+			"beginCaptures": {
+			  "1": {
+				"name": "punctuation.definition.tag.begin.xml.nexacro"
+			  },
+			  "2": {
+				"name": "entity.name.tag.xml.nexacro"
+			  }
+			},
+			"end": ">",
+			"endCaptures": {
+			  "0": {
+				"name": "punctuation.definition.tag.end.xml.nexacro"
+			  }
+			},
+			"name": "meta.tag.structure.$2.end.xml.nexacro",
+			"patterns": [
+			  {
+				"include": "#tagStuff"
+			  }
+			]
+		  },
+		  {
+			"include": "#embeddedScript"
+		  },
+		  {
+			"begin": "(<)((?:([-_a-zA-Z0-9]+:))?([-_a-zA-Z0-9:]+))(?=(\\s[^>]*)?></\\2>)",
+			"beginCaptures": {
+			  "1": {
+				"name": "punctuation.definition.tag.xml.nexacro"
+			  },
+			  "2": {
+				"name": "entity.name.tag.xml.nexacro"
+			  },
+			  "3": {
+				"name": "invalid.illegal.namespace-not-allowed.xml.nexacro"
+			  },
+			  "4": {
+				"name": "entity.name.tag.localname.xml.nexacro"
+			  }
+			},
+			"end": "(>)(</)((?:([-_a-zA-Z0-9]+:))?([-_a-zA-Z0-9:]+))(>)",
+			"endCaptures": {
+			  "1": {
+				"name": "punctuation.definition.tag.xm.nexacro"
+			  },
+			  "2": {
+				"name": "punctuation.definition.tag.xml.nexacro"
+			  },
+			  "3": {
+				"name": "entity.name.tag.xml.nexacro"
+			  },
+			  "4": {
+				"name": "invalid.illegal.namespace-not-allowed.xml.nexacro"
+			  },
+			  "5": {
+				"name": "entity.name.tag.localname.xml.nexacro"
+			  },
+			  "6": {
+				"name": "punctuation.definition.tag.xml.nexacro"
+			  }
+			},
+			"name": "meta.tag.no-content.xml.nexacro",
+			"patterns": [
+			  {
+				"include": "#tagStuff"
+			  }
+			]
+		  },
+		  {
+			"begin": "(</?)(?:([-\\w\\.]+)((:)))?([-\\w\\.:]+)",
+			"captures": {
+			  "1": {
+				"name": "punctuation.definition.tag.xml.nexacro"
+			  },
+			  "2": {
+				"name": "entity.name.tag.namespace.xml.nexacro"
+			  },
+			  "3": {
+				"name": "entity.name.tag.xml.nexacro"
+			  },
+			  "4": {
+				"name": "punctuation.separator.namespace.xml.nexacro"
+			  },
+			  "5": {
+				"name": "entity.name.tag.localname.xml.nexacro"
+			  }
+			},
+			"end": "(/?>)",
+			"name": "meta.tag.xml.nexacro",
+			"patterns": [
+			  {
+				"include": "#tagStuff"
+			  }
+			]
+		  }
+		]
+	  },
+	  "tagStuff": {
+		"patterns": [
+		  {
+			"captures": {
+			  "1": {
+				"name": "invalid.illegal.namespace-not-allowed.xml.nexacro"
+			  },
+			  "2": {
+				"name": "entity.other.attribute-name.localname.xml.nexacro"
+			  }
+			},
+			"match": "(?:^|\\s+)(?:([-\\w.]+:))?([-\\w.:]+)\\s*="
+		  },
+		  {
+			"include": "#doublequotedString"
+		  },
+		  {
+			"include": "#singlequotedString"
+		  }
+		]
+	  },
+	  "comment": {
+		"begin": "<!--",
+		"captures": {
+		  "0": {
+			"name": "punctuation.definition.comment.xml.nexacro"
+		  }
+		},
+		"end": "-->",
+		"name": "comment.block.xml.nexacro",
+		"patterns": [
+		  {
+			"match": "\\G-?>",
+			"name": "invalid.illegal.characters-not-allowed-here.xml.nexacro"
+		  },
+		  {
+			"match": "<!--(?!>)|<!-(?=-->)",
+			"name": "invalid.illegal.characters-not-allowed-here.xml.nexacro"
+		  },
+		  {
+			"match": "--!>",
+			"name": "invalid.illegal.characters-not-allowed-here.xml.nexacro"
+		  }
+		]
+	  },
+	  "xml-processing": {
+		"begin": "(<\\?)(xml)",
+		"captures": {
+		  "1": {
+			"name": "punctuation.definition.tag.xml.nexacro"
+		  },
+		  "2": {
+			"name": "entity.name.tag.xml.nexacro"
+		  }
+		},
+		"end": "(\\?>)",
+		"name": "meta.tag.metadata.processing.xml.nexacro",
+		"patterns": [
+		  {
+			"match": " ([a-zA-Z-]+)",
+			"name": "entity.other.attribute-name.xml.nexacro"
+		  },
+		  {
+			"include": "#doublequotedString"
+		  },
+		  {
+			"include": "#singlequotedString"
+		  }
+		]
+	  }
+	}
+  }
+  
